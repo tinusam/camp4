@@ -55,7 +55,7 @@ def getContact(id):
     myCursor.execute('SELECT * FROM Contacts WHERE id = ?', id)
     row = myCursor.fetchone()
     if row is None:
-        return jsonify({'result':False})
+        return jsonify({'res':"Failed"})
     contact = {
         'id': row[0],
         'name': row[1],
@@ -71,7 +71,7 @@ def addContact():
     myCursor = conn.cursor()
     myCursor.execute('INSERT INTO Contacts (Name, Number) VALUES (?, ?)', request.json['name'], request.json['number'])
     conn.commit()
-    return jsonify({'result':True})
+    return jsonify({'res':"success"})
 
 @app.route('/contacts/<int:id>', methods=['PUT'])
 def updateContact(id):
@@ -80,10 +80,10 @@ def updateContact(id):
     myCursor.execute('SELECT * FROM Contacts WHERE id = ?', id)
     row = myCursor.fetchone()
     if row is None:
-        return jsonify({'result':False})
+        return jsonify({'res':"Failed"})
     myCursor.execute('UPDATE Contacts SET Name = ?, Number = ? WHERE id = ?', request.json['name'], request.json['number'], id)
     conn.commit()
-    return jsonify({'result':True})
+    return jsonify({'res':"success"})
 
 @app.route('/contacts/<int:id>', methods=['DELETE'])
 def deleteContact(id):
@@ -92,10 +92,10 @@ def deleteContact(id):
     myCursor.execute('SELECT * FROM Contacts WHERE id = ?', id)
     row = myCursor.fetchone()
     if row is None:
-        return jsonify({'result':False})
+        return jsonify({'res':"Failed"})
     myCursor.execute('DELETE FROM Contacts WHERE id = ?', id)
     conn.commit()
-    return jsonify({'result':True})
+    return jsonify({'res':"success"})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
